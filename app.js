@@ -21,7 +21,7 @@ mongoClient
 const app = express();
 
 const deckPost = require("./routes/post");
-const deckComment = require("./routes/comment");
+// const deckComment = require("./routes/comment");
 const deckLike = require("./routes/like");
 const deckRoute = require("./routes/deck");
 const userRoute = require("./routes/user");
