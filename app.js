@@ -8,7 +8,7 @@ const mongoClient = require("mongoose");
 
 // setup connect mongodb by mongoose
 mongoClient
-  .connect(process.env.DATABASE_URL, {
+  .connect("mongodb://localhost/nodejsapistarter", {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -68,4 +68,5 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-app.listen(process.env.PORT || 3000)
+const port = app.get("port") || 3000;
+app.listen(port, () => console.log(`Server is listening on port ${port}`));
