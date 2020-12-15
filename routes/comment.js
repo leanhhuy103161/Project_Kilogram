@@ -2,7 +2,7 @@ const express = require('express')
 // const router = express.Router()
 const router = require('express-promise-router')()
 
-const CommentController = require('../controllers/Comment')
+const CommentController = require('../controllers/comment')
 
 const { validateBody, validateParam, schemas } = require('../helpers/routerHelpers')
 
