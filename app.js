@@ -8,7 +8,7 @@ const mongoClient = require("mongoose");
 
 // setup connect mongodb by mongoose
 mongoClient
-  .connect("mongodb://localhost/nodejsapistarter", {
+  .connect("mongodb+srv://dbUser:dbuserpassword@cluster0.qweiu.mongodb.net/databasehuy?retryWrites=true&w=majority", {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
