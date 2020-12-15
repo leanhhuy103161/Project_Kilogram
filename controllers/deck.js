@@ -1,10 +1,3 @@
-/**
- * We can interact with mongoose in three diffirent ways:
- * [v] Callback
- * [v] Promises
- * [v] Async/await (Promises)
- */
-
 const Deck = require('../models/Deck')
 const User = require('../models/User')
 
@@ -24,7 +17,7 @@ const deleteDeck = async (req, res, next) => {
     // Remove deck from owner's decks list
     owner.decks.pull(deck)
     await owner.save()
-
+    
     return res.status(200).json({ success: true })
 }
 
