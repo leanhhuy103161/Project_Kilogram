@@ -24,7 +24,7 @@ const getUser = async (req, res, next) => {
   // const user = await User.findById(userID);
 
   // get  informations of user
-  const user = await User.findById(userID).populate("posts");
+  const user = await User.findById(userID);
 
   return res.status(200).json({ user });
 };
