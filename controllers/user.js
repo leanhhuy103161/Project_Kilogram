@@ -77,6 +77,7 @@ const searchUsers = async (req, res, next) => {
       found = {}
       found._id = user._id
       found.lastName = user.lastName
+      found.avatar = user.avatar
       foundLastName.push(found)
     });
     //return foundLastName;
@@ -89,6 +90,7 @@ const searchUsers = async (req, res, next) => {
     found = {}
     found._id = user._id
     found.lastName = user.lastName
+    found.avatar = user.avatar
     foundLastName.push(found)
   });
   return res.status(200).json({found: foundLastName})
