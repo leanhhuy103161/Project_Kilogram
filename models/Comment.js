@@ -15,7 +15,7 @@ const CommentSchema = new Schema({
       ref: 'User',
       unique: true,
     },
-    time: {
+    dateComment: {
       type: Date
     }
 })

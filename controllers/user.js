@@ -215,7 +215,7 @@ const updateUser = async (req, res, next) => {
   const { userID } = req.value.params;
 
   const newUser = req.value.body;
-
+  // console.log(newUser);
   const result = await User.findByIdAndUpdate(userID, newUser);
 
   return res.status(200).json({ success: true });

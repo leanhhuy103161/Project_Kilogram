@@ -10,6 +10,9 @@ const LikeSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Post',
         unique: true
+    },
+    dateLike: {
+      type: Date
     }
 })
 

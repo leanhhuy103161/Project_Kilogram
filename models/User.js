@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const bcrypt = require('bcryptjs')
-const { number } = require('@hapi/joi')
+
 
 const UserSchema = new Schema({
   avatar: {
@@ -14,10 +14,6 @@ const UserSchema = new Schema({
   },
   lastName: {
     type: String
-  },
-  userName: {
-    type: String,
-    unique: true
   },
   email: {
     type: String,
@@ -44,6 +40,9 @@ const UserSchema = new Schema({
   follow: {
     type: Schema.Types.ObjectId,
     ref: 'Follow'
+  },
+  dateCreate: {
+    type: Date
   }
 })
 

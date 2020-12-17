@@ -7,8 +7,7 @@ const PostSchema = new Schema({
     },
     owner: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
-        unique: true
+        ref: 'User'
     },
     totalLike: {
         type: Number,

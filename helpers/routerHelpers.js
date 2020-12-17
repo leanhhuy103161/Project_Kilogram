@@ -122,7 +122,8 @@ const schemas = {
   userOptionalSchema: Joi.object().keys({
     firstName: Joi.string().min(2),
     lastName: Joi.string().min(2),
-    email: Joi.string().email()
+    email: Joi.string().email(),
+    avatar: Joi.string()
   })
 }
 
