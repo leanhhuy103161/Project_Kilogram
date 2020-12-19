@@ -48,6 +48,7 @@ const newLike = async (req, res, next) => {
   var like = await Like.find({postIsLiked: postIsLiked})
 
   if(like.length == 0) {
+    console.log("if");
     like = req.value.body
     const newLike = new Like(like)
     await newLike.save()
@@ -56,7 +57,8 @@ const newLike = async (req, res, next) => {
     await post.save()
     return res.status(201).json({like: newLike})
   }
-  else if(like[0].userLiked) {
+  else if(like[0].userLiked.length != 0) {
+    console.log("else if", like[0].userLiked);
     const userWasLiked = like[0].userLiked
     userWasLiked.forEach(user => {
       if(user == userLiked) {
@@ -66,6 +68,7 @@ const newLike = async (req, res, next) => {
     });
   }
   else {
+    console.log("else");
     ++post.totalLike;
     await post.save()
     like[0].userLiked.push(userLiked)
