@@ -17,4 +17,6 @@ router.route('/:postID')
     .patch(validateParam(schemas.idSchema, 'postID'), validateBody(schemas.postOptionalSchema), PostController.updatePost)
     .delete(validateParam(schemas.idSchema, 'postID'), PostController.deletePost)
 
+router.route('/:postID/likes')
+    .get(validateParam(schemas.idSchema, 'postID'), PostController.getLikesInPost)
 module.exports = router

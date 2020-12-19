@@ -1,3 +1,4 @@
+const Like = require('../models/Like')
 const Post = require('../models/Post')
 const User = require('../models/User')
 
@@ -71,11 +72,19 @@ const updatePost = async (req, res, next) => {
     return res.status(200).json({ success: true })
 }
 
+const getLikesInPost = async (req, res, next) => {
+  const { postID } = req.value.params
+  const like = await Like.findOne({postIsLiked: postID}).populate("userLiked")
+  console.log(like.userLiked);
+  res.status(200).json({user: like.userLiked})
+}
+
 module.exports = {
     deletePost,
     getPost,
     index,
     newPost,
     replacePost,
-    updatePost
+    updatePost,
+    getLikesInPost
 }
