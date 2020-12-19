@@ -5,23 +5,24 @@ const Post = require('../models/Post')
 
 // delete a like in a post
 const deleteLike = async (req, res, next) => {
-    const { likeID } = req.value.params
+  console.log("call delete like function")
+  const { likeID } = req.value.params
+  // const { userLiked, postIsLiked }
+  // Get a like
+  const like = await Like.findById(likeID)
+  const postIsLikedID = like.postIsLiked
 
-    // Get a like
-    const like = await Like.findById(likeID)
-    const postIsLikedID = like.postIsLiked
+  // Get a post
+  const postIsLiked = await Post.findById(postIsLikedID)
 
-    // Get a post
-    const postIsLiked = await Post.findById(postIsLikedID)
+  // Remove the like
+  await like.remove()
 
-    // Remove the like
-    await like.remove()
+  // Remove like from post's likes list
+  postIsLiked.likes.pull(like)
+  await postIsLiked.save()
 
-    // Remove like from post's likes list
-    postIsLiked.likes.pull(like)
-    await postIsLiked.save()
-
-    return res.status(200).json({ success: true })
+  return res.status(200).json({ success: true })
 }
 
 // get information of a like 
@@ -39,23 +40,56 @@ const index = async (req, res, next) => {
 
 // create a like 
 const newLike = async (req, res, next) => {
-    console.log("call create like function")
-    // Find post had this like
-    const post = await Post.findById(req.value.body.postIsLiked)
-    console.log("Found post had this id", post._id) 
-    // Create a new like
-    const like = req.value.body
-    delete like.owner
+  console.log("call create like function")
+  const { postIsLiked, userLiked } = req.value.body
+  // Find post had this like
+  const post = await Post.findById(postIsLiked)
+ 
+  var like = await Like.find({postIsLiked: postIsLiked})
 
-    like.postIsLiked = post._id
+  if(like.length == 0) {
+    like = req.value.body
     const newLike = new Like(like)
     await newLike.save()
-
-    // Add newly created like to the actual likes
-    post.likes.push(newLike._id)
+    ++post.totalLike;
+    post.likes = newLike._id
     await post.save()
-
     return res.status(201).json({like: newLike})
+  }
+  else if(like[0].userLiked) {
+    const userWasLiked = like[0].userLiked
+    userWasLiked.forEach(user => {
+      if(user == userLiked) {
+        console.log(user);
+        return res.status(200).json({status: "you already liked"})
+      }
+    });
+  }
+  else {
+    ++post.totalLike;
+    await post.save()
+    like[0].userLiked.push(userLiked)
+    await like[0].save()
+    return res.status(201).json({like: like[0]})
+  }
+  
+}
+
+const dislike = async (req, res, next) => {
+  console.log("calling dislike function")
+  const {postIsLiked, userLiked} = req.value.body
+  const post = await Post.findById(postIsLiked)
+  // const user = await User.findById(userLiked)
+  --post.totalLike;
+  console.log(post)
+  const like = await Like.findById( post.likes)
+
+  like.userLiked.pull(userLiked)
+  console.log(post)
+  console.log(like)
+  await post.save()
+  await like.save()
+  return res.status(201).json({status: "disliked"})
 }
 
 module.exports = {
@@ -63,4 +97,5 @@ module.exports = {
     getLike,
     index,
     newLike,
+    dislike
 }

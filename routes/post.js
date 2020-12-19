@@ -10,6 +10,7 @@ router.route('/')
     .get(PostController.index)
     .post(validateBody(schemas.newPostSchema), PostController.newPost)
 
+
 router.route('/:postID')
     .get(validateParam(schemas.idSchema, 'postID'), PostController.getPost)
     .put(validateParam(schemas.idSchema, 'postID'), validateBody(schemas.newPostSchema), PostController.replacePost)
