@@ -63,7 +63,9 @@ const newLike = async (req, res, next) => {
   else {
     const createLike = like.userLiked
     console.log("createLike: ", createLike);
+    console.log(like.userLiked.length)
     if(like.userLiked.length != 0) {
+      console.log(like.userLiked.length)
       console.log("else if", like.userLiked);
       const userWasLiked = like.userLiked
       userWasLiked.forEach(user => {
@@ -79,6 +81,12 @@ const newLike = async (req, res, next) => {
       await like.save()
       return res.status(201).json({like: like})
     }
+    console.log("else");
+    ++post.totalLike;
+    await post.save()
+    like.userLiked.push(userLiked)
+    await like.save()
+    return res.status(201).json({like: like})
   }
 }
 
