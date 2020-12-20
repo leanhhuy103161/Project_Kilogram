@@ -11,7 +11,8 @@ const LikeSchema = new Schema({
         ref: 'Post',
     },
     dateLike: {
-      type: Date
+      type: Date,
+      default: Date.now
     }
 })
 

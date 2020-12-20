@@ -29,7 +29,8 @@ const PostSchema = new Schema({
         ref: 'Like'
     },
     dateCreate: {
-      type: Date
+      type: Date,
+      default: Date.now
     }
 })
 

@@ -16,7 +16,8 @@ const CommentSchema = new Schema({
       unique: true,
     },
     dateComment: {
-      type: Date
+      type: Date,
+      default: Date.now
     }
 })
 
