@@ -91,6 +91,12 @@ const checkLikeStatus = async (req, res, next) => {
   else res.status(200).json({likeStatus: false})
 }
 
+const getCommentsInPost = async (req, res, next) => {
+  const { postID } = req.value.params
+  const comment = await Comment.findOne({postIsLiked: postID}).populate("comments")
+  console.log(comment);
+  // res.status(200).json({user: like.userLiked})
+}
 
 module.exports = {
     deletePost,
@@ -100,5 +106,6 @@ module.exports = {
     replacePost,
     updatePost,
     getLikesInPost,
-    checkLikeStatus
+    checkLikeStatus,
+    getCommentsInPost
 }

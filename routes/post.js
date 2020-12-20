@@ -21,5 +21,9 @@ router.route('/:postID/likes')
     .get(validateParam(schemas.idSchema, 'postID'), PostController.getLikesInPost)
 
 router.route("/:postID/likes/:userID")
-    .get(validateParam(schemas.idSchema, 'postID'), validateParam(schemas.idSchema, 'userID'), PostController.checkLikeStatus)    
+    .get(validateParam(schemas.idSchema, 'postID'), validateParam(schemas.idSchema, 'userID'), PostController.checkLikeStatus)  
+    
+router.route("/:postID/comments")
+    .get(validateParam(schemas.idSchema, 'postID'), PostController.getCommentsInPost) 
+
 module.exports = router
