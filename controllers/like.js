@@ -48,9 +48,9 @@ const newLike = async (req, res, next) => {
   var like = await Like.find({postIsLiked: postIsLiked})
   console.log(like);
   like = like[0]
-  // console.log(like);
+  console.log(like);
   
-  if(typeof like !== undefined) {
+  if(like === undefined) {
     console.log("if");
     like = req.value.body
     const newLike = new Like(like)
