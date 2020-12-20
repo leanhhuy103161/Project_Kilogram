@@ -101,6 +101,18 @@ const schemas = {
     owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
   }),
 
+  newCommentSchema: Joi.object().keys({
+    postWasCommented: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    commented: Joi.string().min(1).required(),
+    userCommented: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+  }),
+
+  commentOptionalSchema: Joi.object().keys({
+    postWasCommented: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
+    commented: Joi.string().min(1).required(),
+    userCommented: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
+  }),
+
   newLikeSchema: Joi.object().keys({
     userLiked: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required(),
     postIsLiked: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()

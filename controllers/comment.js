@@ -42,7 +42,7 @@ const newComment = async (req, res, next) => {
     delete comment.postWasCommented
 
     comment.postWasCommented = post._id
-    const newComment = new Deck(comment)
+    const newComment = new Comment(comment)
     await newComment.save()
 
     // Add newly created comment to the actual post's comments
