@@ -46,36 +46,38 @@ const newLike = async (req, res, next) => {
   const post = await Post.findById(postIsLiked)
  
   var like = await Like.find({postIsLiked: postIsLiked})
-
-  if(like.length == 0) {
+  like = like[0]
+  console.log(like);
+  const createLike = like.userLiked
+  console.log("createLike: ", createLike);
+  if(!like) {
     console.log("if");
     like = req.value.body
     const newLike = new Like(like)
-    await newLike.save()
+    // await newLike.save()
     ++post.totalLike;
     post.likes = newLike._id
-    await post.save()
-    return res.status(201).json({like: newLike})
-  }
-  else if(like[0].userLiked.length != 0) {
-    console.log("else if", like[0].userLiked);
-    const userWasLiked = like[0].userLiked
-    userWasLiked.forEach(user => {
-      if(user == userLiked) {
-        console.log(user);
-        return res.status(200).json({status: "you already liked"})
-      }
-    });
+    // await post.save()
+    // return res.status(201).json({like: newLike})
   }
   else {
-    console.log("else");
-    ++post.totalLike;
-    await post.save()
-    like[0].userLiked.push(userLiked)
-    await like[0].save()
-    return res.status(201).json({like: like[0]})
+    if(like.userLiked.length != 0) {
+      console.log("else if", like.userLiked);
+      const userWasLiked = like.userLiked
+      userWasLiked.forEach(user => {
+        if(user == userLiked) {
+          console.log(user);
+          return res.status(200).json({status: "you already liked"})
+        }
+      });
+      console.log("else");
+      ++post.totalLike;
+      await post.save()
+      like.userLiked.push(userLiked)
+      await like.save()
+      return res.status(201).json({like: like})
+    }
   }
-  
 }
 
 
