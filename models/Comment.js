@@ -13,7 +13,6 @@ const CommentSchema = new Schema({
     userCommented: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      unique: true,
     },
     dateComment: {
       type: Date,
