@@ -1,6 +1,7 @@
 const Like = require('../models/Like')
 const Post = require('../models/Post')
 const User = require('../models/User')
+const Comment = require('../models/Comment')
 
 const deletePost = async (req, res, next) => {
     const { postID } = req.value.params
@@ -93,9 +94,28 @@ const checkLikeStatus = async (req, res, next) => {
 
 const getCommentsInPost = async (req, res, next) => {
   const { postID } = req.value.params
-  const comment = await Comment.findOne({postIsLiked: postID}).populate("comments")
-  console.log(comment);
-  // res.status(200).json({user: like.userLiked})
+  const comments = await Comment.find({postWasCommented: postID}).populate("userCommented")
+  // console.log(comments)
+  var userBox = []
+  var commentBox = []
+  comments.forEach(comment => {
+    userBox.push(comment.userCommented)
+    commentBox.push(comment.commented)
+  });
+  // console.log(userBox)
+  // console.log(commentBox)
+  var userRequired = []
+  for (let index = 0; index < userBox.length; index++){
+    found = {}
+    found._id = userBox[index]._id
+    found.lastName = userBox[index].lastName
+    found.firstName = userBox[index].firstName
+    found.avatar = userBox[index].avatar
+    found.commented = commentBox[index]
+    userRequired.push(found)
+  }
+  // console.log(userRequired)
+  res.status(200).json({user: userRequired})
 }
 
 module.exports = {

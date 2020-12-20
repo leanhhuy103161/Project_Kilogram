@@ -5,7 +5,6 @@ const CommentSchema = new Schema({
     postWasCommented: {
       type: Schema.Types.ObjectId,
       ref: 'Post',
-      unique: true
     },
     commented: {
       type: String
