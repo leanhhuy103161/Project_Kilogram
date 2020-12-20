@@ -79,6 +79,19 @@ const getLikesInPost = async (req, res, next) => {
   res.status(200).json({user: like.userLiked})
 }
 
+const checkLikeStatus = async (req, res, next) => {
+  const {userID, postID} = req.value.params
+  const like = await Like.findOne({postIsLiked: postID}).populate("userLiked")
+  const userLiked = like.userLiked
+  // console.log(userID);
+  // console.log(postID);
+  // console.log(userLiked);
+  const found = userLiked.find(user => user._id == userID)
+  if(found._id) res.status(200).json({likeStatus: true})
+  else res.status(200).json({likeStatus: false})
+}
+
+
 module.exports = {
     deletePost,
     getPost,
@@ -86,5 +99,6 @@ module.exports = {
     newPost,
     replacePost,
     updatePost,
-    getLikesInPost
+    getLikesInPost,
+    checkLikeStatus
 }

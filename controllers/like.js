@@ -78,6 +78,8 @@ const newLike = async (req, res, next) => {
   
 }
 
+
+
 const dislike = async (req, res, next) => {
   console.log("calling dislike function")
   const {postIsLiked, userLiked} = req.value.body

@@ -103,10 +103,23 @@ const deleteFollow = async (req, res, next) => {
   return res.status(200).json({success: true})
 }
 
+
+const checkFollowStatus = async (req, res, next) => {
+  const {yourID, guestID} = req.value.params
+  const guest = await User.findById(guestID).populate("follow")
+  var followerBox = guest.follow.followers;
+  // console.log(followerBox);
+  const found = followerBox.find(followerID => followerID == yourID)
+  if(found) res.status(200).json({followStatus: true})
+  else res.status(200).json({followStatus: false})
+  // console.log(found);
+}
+
 module.exports = {
   getFollow,
   getFollower,
   getFollowing,
   newFollow,
   deleteFollow,
+  checkFollowStatus
 }

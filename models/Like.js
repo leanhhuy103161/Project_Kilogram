@@ -9,10 +9,6 @@ const LikeSchema = new Schema({
     postIsLiked: {
         type: Schema.Types.ObjectId,
         ref: 'Post',
-    },
-    dateLike: {
-      type: Date,
-      default: Date.now
     }
 })
 

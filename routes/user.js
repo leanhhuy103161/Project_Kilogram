@@ -54,5 +54,7 @@ router.route('/:userID/following')
     .get(validateParam(schemas.idSchema, 'userID'), FollowController.getFollowing)
     .post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userFollowSchema), FollowController.deleteFollow) // (:userID) unfollow someone
 
+router.route('/:yourID/checkfollow/:guestID')
+    .get(validateParam(schemas.idSchema, 'yourID'), validateParam(schemas.idSchema, 'guestID'), FollowController.checkFollowStatus)
 
 module.exports = router
