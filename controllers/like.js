@@ -42,25 +42,27 @@ const index = async (req, res, next) => {
 const newLike = async (req, res, next) => {
   console.log("call create like function")
   const { postIsLiked, userLiked } = req.value.body
+  console.log(userLiked);
   // Find post had this like
   const post = await Post.findById(postIsLiked)
- 
   var like = await Like.find({postIsLiked: postIsLiked})
-  like = like[0]
   console.log(like);
-  const createLike = like.userLiked
-  console.log("createLike: ", createLike);
-  if(!like) {
+  like = like[0]
+  // console.log(like);
+  
+  if(typeof like !== undefined) {
     console.log("if");
     like = req.value.body
     const newLike = new Like(like)
-    // await newLike.save()
+    await newLike.save()
     ++post.totalLike;
     post.likes = newLike._id
-    // await post.save()
-    // return res.status(201).json({like: newLike})
+    await post.save()
+    return res.status(201).json({like: newLike})
   }
   else {
+    const createLike = like.userLiked
+    console.log("createLike: ", createLike);
     if(like.userLiked.length != 0) {
       console.log("else if", like.userLiked);
       const userWasLiked = like.userLiked
