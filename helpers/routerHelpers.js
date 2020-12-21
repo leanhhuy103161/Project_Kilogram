@@ -1,5 +1,4 @@
 const Joi = require('@hapi/joi')
-const { schema } = require('../models/Deck')
 
 const validateBody = (schema) => {
   return (req, res, next) => {

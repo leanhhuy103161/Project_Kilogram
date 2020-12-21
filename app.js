@@ -23,7 +23,6 @@ const app = express();
 const deckPost = require("./routes/post");
 const deckComment = require("./routes/comment");
 const deckLike = require("./routes/like");
-const deckRoute = require("./routes/deck");
 const userRoute = require("./routes/user");
 
 // Middlewares
@@ -32,13 +31,10 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // Routes
-app.use("/decks", deckRoute);
 app.use("/users", userRoute);
 app.use("/posts", deckPost);
 app.use("/likes", deckLike);
 app.use("/comments", deckComment);
-
-
 
 // Routes
 app.get("/", (req, res, next) => {

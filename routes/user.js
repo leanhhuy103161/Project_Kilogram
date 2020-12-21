@@ -18,43 +18,35 @@ router.route('/')
 
 router.route('/signup').post(validateBody(schemas.authSignUpSchema), UserController.signUp)
 
-router.route('/signin').post(validateBody(schemas.authSignInSchema), passport.authenticate('local', {session: false}), UserController.signIn)
+router.route('/signin')
+    .post(validateBody(schemas.authSignInSchema), passport.authenticate('local', {session: false}), UserController.signIn)
 
 router.route('/secret').get(passport.authenticate('jwt', { session: false}), UserController.secret)
 
-router.route('/search').post(validateBody(schemas.searchSchema), ValidateQuery(schemas.searchQuerySchema, 'page'), UserController.searchUsers)
+router.route('/search')
+    .post(passport.authenticate('jwt', { session: false}), validateBody(schemas.searchSchema), ValidateQuery(schemas.searchQuerySchema, 'page'), UserController.searchUsers)
 
 router.route('/:userID')
-    .get(validateParam(schemas.idSchema, 'userID'), UserController.getUser)
-    .put(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userSchema), UserController.replaceUser)
-    .patch(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userOptionalSchema), UserController.updateUser)
-
-
-router.route('/:userID/decks')
-    .get(validateParam(schemas.idSchema, 'userID'), UserController.getUserDecks)
-    .post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.deckSchema), UserController.newUserDeck)
+    .get(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), UserController.getUser)
+    .put(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userSchema), UserController.replaceUser)
+    .patch(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userOptionalSchema), UserController.updateUser)
 
 router.route('/:userID/posts')
-.get(validateParam(schemas.idSchema, 'userID'), ValidateQuery(schemas.searchQuerySchema, 'page'), UserController.getUserPosts)
-.post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.postSchema), UserController.newUserPost)
+    .get(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), ValidateQuery(schemas.searchQuerySchema, 'page'), UserController.getUserPosts)
+    .post(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), validateBody(schemas.postSchema), UserController.newUserPost)
 
-router.route('/:userID/:postID/likes')
-    .get(validateParam(schemas.idSchema, 'userID'), validateParam(schemas.idSchema, 'postID'), UserController.getUserDecks)
-
-router.route('./:userID/:postID/Comments')
-    .get(validateParam(schemas.idSchema, 'userID'), validateParam(schemas.idSchema, 'postID'), UserController.getUserDecks)
-
-router.route('/:userID/follow').get(validateParam(schemas.idSchema, 'userID'), FollowController.getFollow)
+router.route('/:userID/follow')
+    .get(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), FollowController.getFollow)
 
 router.route('/:userID/follower')
-    .get(validateParam(schemas.idSchema, 'userID'), FollowController.getFollower) // get all follower and follwing of a user (:userID)
-    .post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userFollowSchema), FollowController.newFollow) //  (:userID) follow someone
+    .get(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), FollowController.getFollower) // get all follower and follwing of a user (:userID)
+    .post(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userFollowSchema), FollowController.newFollow) //  (:userID) follow someone
 
 router.route('/:userID/following')
-    .get(validateParam(schemas.idSchema, 'userID'), FollowController.getFollowing)
-    .post(validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userFollowSchema), FollowController.deleteFollow) // (:userID) unfollow someone
+    .get(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), FollowController.getFollowing)
+    .post(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userFollowSchema), FollowController.deleteFollow) // (:userID) unfollow someone
 
 router.route('/:yourID/checkfollow/:guestID')
-    .get(validateParam(schemas.idSchema, 'yourID'), validateParam(schemas.idSchema, 'guestID'), FollowController.checkFollowStatus)
+    .get(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'yourID'), validateParam(schemas.idSchema, 'guestID'), FollowController.checkFollowStatus)
 
 module.exports = router

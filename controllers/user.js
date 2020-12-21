@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs')
-const Deck = require("../models/Deck");
 const User = require("../models/User");
 const Post = require("../models/Post")
 
@@ -27,15 +26,6 @@ const getUser = async (req, res, next) => {
   const user = await User.findById(userID);
 
   return res.status(200).json({ user });
-};
-
-const getUserDecks = async (req, res, next) => {
-  const { userID } = req.value.params;
-
-  // Get user
-  const user = await User.findById(userID).populate("decks");
-
-  return res.status(200).json({ decks: user.decks });
 };
 
 // get all posts of user / page
@@ -128,31 +118,6 @@ const newUser = async (req, res, next) => {
   await newUser.save();
 
   return res.status(201).json({ user: newUser });
-};
-
-const newUserDeck = async (req, res, next) => {
-  const { userID } = req.value.params;
-
-  // Create a new deck
-  const newDeck = new Deck(req.value.body);
-  
-  // Get user
-  const user = await User.findById(userID);
- 
-  // Assign user as a deck's owner
-  newDeck.owner = user;
-  // console.log(newDeck.owner)
-  console.log(newDeck)
-  // Save the deck
-  await newDeck.save();
-  
-  // Add deck to user's decks array 'decks'
-  user.decks.push(newDeck._id);
-
-  // Save the user
-  await user.save();
-  
-  return res.status(201).json({ deck: newDeck });
 };
 
 const newUserPost = async (req, res, next) => {
@@ -248,10 +213,8 @@ const updateUser = async (req, res, next) => {
 
 module.exports = {
   getUser,
-  getUserDecks,
   index,
   newUser,
-  newUserDeck,
   replaceUser,
   secret,
   signIn,
