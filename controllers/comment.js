@@ -12,7 +12,7 @@ const deleteComment = async (req, res, next) => {
     const post = await Post.findById(postHadCommentedID)
     --post.totalComment 
     // Remove the comment
-    await Comment.remove()
+    await comment.remove()
 
     // Remove comment from post's comments list
     post.comments.pull(comment)
