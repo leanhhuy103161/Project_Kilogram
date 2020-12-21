@@ -116,7 +116,8 @@ const getCommentsInPost = async (req, res, next) => {
     comments.forEach(comment => {
       found = {}
       found.dateComment = comment.dateComment
-      found.userCommented = comment.userCommented
+      found.commented = comment.commented
+      found._id = comment._id
       userBox.push(comment.userCommented)
       commentBox.push(found)
     });
@@ -131,6 +132,7 @@ const getCommentsInPost = async (req, res, next) => {
       found.avatar = userBox[index].avatar
       found.commented = commentBox[index].commented
       found.dateComment = commentBox[index].dateComment
+      found.commentID = commentBox[index]._id
       userRequired.push(found)
     }
     // console.log(userRequired)
@@ -138,13 +140,14 @@ const getCommentsInPost = async (req, res, next) => {
   }
   // console.log("not using page");
   const comments = await Comment.find({postWasCommented: postID}).populate("userCommented")
-  // console.log(comments)
+  console.log(comments)
   var userBox = []
   var commentBox = []
   comments.forEach(comment => {
     found = {}
     found.dateComment = comment.dateComment
-    found.userCommented = comment.userCommented
+    found.commented = comment.commented
+    found._id = comment._id
     userBox.push(comment.userCommented)
     commentBox.push(found)
   });
@@ -159,6 +162,7 @@ const getCommentsInPost = async (req, res, next) => {
     found.avatar = userBox[index].avatar
     found.commented = commentBox[index].commented
     found.dateComment = commentBox[index].dateComment
+    found.commentID = commentBox[index]._id
     userRequired.push(found)
   }
   // console.log(userRequired)

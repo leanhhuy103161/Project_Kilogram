@@ -9,8 +9,8 @@ const deleteComment = async (req, res, next) => {
     const postHadCommentedID = comment.postWasCommented
 
     // Get a post 
-    const post = await User.findById(postHadCommentedID)
-
+    const post = await Post.findById(postHadCommentedID)
+    --post.totalComment 
     // Remove the comment
     await Comment.remove()
 
@@ -36,7 +36,7 @@ const index = async (req, res, next) => {
 const newComment = async (req, res, next) => {
    // Find post had that comment
    const post = await Post.findById(req.value.body.postWasCommented)
-
+   ++post.totalComment 
    // Create a new comment
     const comment = req.value.body
     delete comment.postWasCommented
