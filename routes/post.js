@@ -4,7 +4,7 @@ const router = require('express-promise-router')()
 
 const PostController = require('../controllers/post')
 
-const { validateBody, validateParam, schemas } = require('../helpers/routerHelpers')
+const { validateBody, validateParam, schemas, ValidateQuery } = require('../helpers/routerHelpers')
 
 router.route('/')
     .get(PostController.index)
@@ -18,12 +18,12 @@ router.route('/:postID')
     .delete(validateParam(schemas.idSchema, 'postID'), PostController.deletePost)
 
 router.route('/:postID/likes')
-    .get(validateParam(schemas.idSchema, 'postID'), PostController.getLikesInPost)
+    .get(validateParam(schemas.idSchema, 'postID'), ValidateQuery(schemas.searchQuerySchema, 'page'), PostController.getLikesInPost)
 
 router.route("/:postID/likes/:userID")
     .get(validateParam(schemas.idSchema, 'postID'), validateParam(schemas.idSchema, 'userID'), PostController.checkLikeStatus)  
     
 router.route("/:postID/comments")
-    .get(validateParam(schemas.idSchema, 'postID'), PostController.getCommentsInPost) 
+    .get(validateParam(schemas.idSchema, 'postID'), ValidateQuery(schemas.searchQuerySchema, 'page'), PostController.getCommentsInPost) 
 
 module.exports = router

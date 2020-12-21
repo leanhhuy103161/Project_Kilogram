@@ -75,8 +75,17 @@ const updatePost = async (req, res, next) => {
 
 const getLikesInPost = async (req, res, next) => {
   const { postID } = req.value.params
+  var page = req.value.query.page
+  if(page) {
+    page = parseInt(page)
+    const pageSize = 10
+    var skip = (page - 1)*pageSize
+    const like = await Like.findOne({postIsLiked: postID}).populate("userLiked").skip(skip).limit(pageSize)
+    // console.log(like.userLiked);
+    res.status(200).json({user: like.userLiked})
+  }
   const like = await Like.findOne({postIsLiked: postID}).populate("userLiked")
-  console.log(like.userLiked);
+  // console.log(like.userLiked);
   res.status(200).json({user: like.userLiked})
 }
 
@@ -94,13 +103,50 @@ const checkLikeStatus = async (req, res, next) => {
 
 const getCommentsInPost = async (req, res, next) => {
   const { postID } = req.value.params
+  var page = req.value.query.page
+  if(page) {
+    // console.log("using page");
+    page = parseInt(page)
+    const pageSize = 10
+    var skip = (page - 1)*pageSize
+    const comments = await Comment.find({postWasCommented: postID}).populate("userCommented").skip(skip).limit(pageSize)
+    // console.log(comments)
+    var userBox = []
+    var commentBox = []
+    comments.forEach(comment => {
+      found = {}
+      found.dateComment = comment.dateComment
+      found.userCommented = comment.userCommented
+      userBox.push(comment.userCommented)
+      commentBox.push(found)
+    });
+    // console.log(userBox)
+    // console.log(commentBox)
+    var userRequired = []
+    for (let index = 0; index < userBox.length; index++){
+      found = {}
+      found._id = userBox[index]._id
+      found.lastName = userBox[index].lastName
+      found.firstName = userBox[index].firstName
+      found.avatar = userBox[index].avatar
+      found.commented = commentBox[index].commented
+      found.dateComment = commentBox[index].dateComment
+      userRequired.push(found)
+    }
+    // console.log(userRequired)
+    return res.status(200).json({user: userRequired})
+  }
+  // console.log("not using page");
   const comments = await Comment.find({postWasCommented: postID}).populate("userCommented")
   // console.log(comments)
   var userBox = []
   var commentBox = []
   comments.forEach(comment => {
+    found = {}
+    found.dateComment = comment.dateComment
+    found.userCommented = comment.userCommented
     userBox.push(comment.userCommented)
-    commentBox.push(comment.commented)
+    commentBox.push(found)
   });
   // console.log(userBox)
   // console.log(commentBox)
@@ -111,11 +157,12 @@ const getCommentsInPost = async (req, res, next) => {
     found.lastName = userBox[index].lastName
     found.firstName = userBox[index].firstName
     found.avatar = userBox[index].avatar
-    found.commented = commentBox[index]
+    found.commented = commentBox[index].commented
+    found.dateComment = commentBox[index].dateComment
     userRequired.push(found)
   }
   // console.log(userRequired)
-  res.status(200).json({user: userRequired})
+  return res.status(200).json({user: userRequired})
 }
 
 module.exports = {
