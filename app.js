@@ -20,9 +20,9 @@ mongoClient
 
 const app = express();
 
-const deckPost = require("./routes/post");
-const deckComment = require("./routes/comment");
-const deckLike = require("./routes/like");
+const postRoute = require("./routes/post");
+const commentRoute = require("./routes/comment");
+const likeRoute = require("./routes/like");
 const userRoute = require("./routes/user");
 
 // Middlewares
@@ -32,9 +32,9 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // Routes
 app.use("/users", userRoute);
-app.use("/posts", deckPost);
-app.use("/likes", deckLike);
-app.use("/comments", deckComment);
+app.use("/posts", postRoute);
+app.use("/likes", likeRoute);
+app.use("/comments", commentRoute);
 
 // Routes
 app.get("/", (req, res, next) => {
