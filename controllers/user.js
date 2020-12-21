@@ -71,29 +71,54 @@ const searchUsers = async (req, res, next) => {
     page = parseInt(page)
     const pageSize = 4
     var skip = (page - 1)*pageSize
-    const foundUsers = await User.find({lastName: { $regex: userName}}).skip(skip).limit(pageSize)
-    const foundLastName = []
-    foundUsers.forEach(user => {
-      found = {}
-      found._id = user._id
-      found.lastName = user.lastName
-      found.avatar = user.avatar
-      foundLastName.push(found)
-    });
-    //return foundLastName;
-    return res.status(200).json({found: foundLastName});
+    // const foundUsers = await User.find({lastName: { $regex: userName}}).skip(skip).limit(pageSize)
+    const foundUsers = await User.aggregate([
+      {$project: { "name" : { $concat : [ "$firstName", " ", "$lastName" ] } }},
+      {$match: {"name": {$regex: userName,  $options:'i'}}}
+    ]).exec(async function(err, result){
+        // console.log("result: ", result);
+        var userBox = []
+        result.forEach(resultUser => {
+          userBox.push(resultUser._id)
+        });
+        const find = await User.find( { _id: { $in: userBox } } ).skip(skip).limit(pageSize)
+        console.log("userBox found: ", find);
+        const searchedUsers = []
+        find.forEach(user => {
+          found = {}
+          found._id = user._id
+          found.lastName = user.lastName
+          found.avatar = user.avatar
+          found.firstName = user.firstName
+          searchedUsers.push(found)
+        });
+        return res.status(200).json({found: searchedUsers})
+      });
   }
-  const foundUsers = await User.find({lastName: { $regex: userName}})
-  console.log(foundUsers)
-  const foundLastName = []
-  foundUsers.forEach(user => {
-    found = {}
-    found._id = user._id
-    found.lastName = user.lastName
-    found.avatar = user.avatar
-    foundLastName.push(found)
-  });
-  return res.status(200).json({found: foundLastName})
+  else {
+    const foundUsers = await User.aggregate([
+      {$project: { "name" : { $concat : [ "$firstName", " ", "$lastName" ] } }},
+      {$match: {"name": {$regex: userName,  $options:'i'}}}
+    ]).exec(async function(err, result){
+        console.log("result: ", result);
+        var userBox = []
+        result.forEach(resultUser => {
+          userBox.push(resultUser._id)
+        });
+        const find = await User.find( { _id: { $in: userBox } } )
+        // console.log("userBox found: ", find);
+        const searchedUsers = []
+        find.forEach(user => {
+          found = {}
+          found._id = user._id
+          found.lastName = user.lastName
+          found.avatar = user.avatar
+          found.firstName = user.firstName
+          searchedUsers.push(found)
+        });
+        return res.status(200).json({found: searchedUsers})
+      });
+  }
 }
 
 // create User
