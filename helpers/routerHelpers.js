@@ -74,30 +74,13 @@ const schemas = {
     page: Joi.string().regex(/^[0-9]{1,100}$/)
   }),
   
-  deckSchema: Joi.object().keys({
-    name: Joi.string().min(6).required(),
-    description: Joi.string().min(10).required()
-  }),
-
   postSchema: Joi.object().keys({
     image: Joi.string().required(),
     description: Joi.string().required()
   }),
 
-  deckOptionalSchema: Joi.object().keys({
-    name: Joi.string().min(6),
-    description: Joi.string().min(10),
-    owner: Joi.string().regex(/^[a-f0-9A-F]{24}$/)
-  }),
-
   idSchema: Joi.object().keys({
     param: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
-  }),
-
-  newDeckSchema: Joi.object().keys({
-    name: Joi.string().min(6).required(),
-    description: Joi.string().min(10).required(),
-    owner: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
   }),
 
   newCommentSchema: Joi.object().keys({

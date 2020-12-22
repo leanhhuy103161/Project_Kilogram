@@ -164,11 +164,11 @@ const secret = async (req, res, next) => {
 const signIn = async (req, res, next) => {
   
   // Encode a token
-  console.log('req: ', req.user)
+  // console.log('req: ', req.user)
   const token = encodedToken(req.user._id)
   const ID = req.user._id
   res.setHeader('Authorization', token)
-  console.log("calling sign in function")
+  // console.log("calling sign in function")
   return res.status(201).json({ _id: ID })
 };
 
@@ -180,12 +180,12 @@ const signUp = async (req, res, next) => {
   if (foundUser) return res.status(403).json({ error: { message: 'Email is already in use.' }})
 
   //Generate a salt
-  console.log('password :', password)
+  // console.log('password :', password)
   const salt = await bcrypt.genSalt(10)
-  console.log('salt ', salt)
+  // console.log('salt ', salt)
   //Generate a password hash
   const hashedPassword = await bcrypt.hash(password, salt)
-  console.log('password hashed: ', hashedPassword)
+  // console.log('password hashed: ', hashedPassword)
   //Re-assign password hashed
   password = hashedPassword
   
