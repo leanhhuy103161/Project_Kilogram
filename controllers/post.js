@@ -80,7 +80,7 @@ const getLikesInPost = async (req, res, next) => {
     page = parseInt(page)
     const pageSize = 10
     var skip = (page - 1)*pageSize
-    const like = await Like.findOne({postIsLiked: postID}).populate("userLiked").skip(skip).limit(pageSize)
+    const like = await Like.findOne({postIsLiked: postID}).populate("userLiked").skip(skip).limit(pageSize).sort({_id:-1})
     // console.log(like.userLiked);
     res.status(200).json({user: like.userLiked})
   }
@@ -109,7 +109,8 @@ const getCommentsInPost = async (req, res, next) => {
     page = parseInt(page)
     const pageSize = 10
     var skip = (page - 1)*pageSize
-    const comments = await Comment.find({postWasCommented: postID}).populate("userCommented").skip(skip).limit(pageSize)
+    const comments = await Comment.find({postWasCommented: postID})
+        .populate("userCommented").skip(skip).limit(pageSize).sort({_id:-1})
     // console.log(comments)
     var userBox = []
     var commentBox = []
@@ -139,7 +140,7 @@ const getCommentsInPost = async (req, res, next) => {
     return res.status(200).json({user: userRequired})
   }
   // console.log("not using page");
-  const comments = await Comment.find({postWasCommented: postID}).populate("userCommented")
+  const comments = await Comment.find({postWasCommented: postID}).populate("userCommented").sort({_id:-1})
   console.log(comments)
   var userBox = []
   var commentBox = []

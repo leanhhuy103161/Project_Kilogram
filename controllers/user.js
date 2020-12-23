@@ -37,12 +37,12 @@ const getUserPosts = async (req, res, next) => {
     const pageSize = 12
     var skip = (page - 1)*pageSize
 
-    const posts = await Post.find({owner: userID}).skip(skip).limit(pageSize)
+    const posts = await Post.find({owner: userID}).skip(skip).limit(pageSize).sort({_id:-1})
     // console.log(posts);
     return res.status(200).json({ posts: posts });
   }
   // Get user
-  const user = await User.findById(userID).populate("posts");
+  const user = await User.findById(userID).populate("posts").sort({_id:-1});
   return res.status(200).json({ posts: user.posts });
 };
 
