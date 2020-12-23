@@ -30,6 +30,7 @@ router.route('/:userID')
     .get(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), UserController.getUser)
     .put(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userSchema), UserController.replaceUser)
     .patch(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), validateBody(schemas.userOptionalSchema), UserController.updateUser)
+    .delete(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), UserController.deleteUser)
 
 router.route('/:userID/posts')
     .get(passport.authenticate('jwt', { session: false}), validateParam(schemas.idSchema, 'userID'), ValidateQuery(schemas.searchQuerySchema, 'page'), UserController.getUserPosts)

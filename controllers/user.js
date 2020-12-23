@@ -211,6 +211,15 @@ const updateUser = async (req, res, next) => {
   return res.status(200).json({ success: true });
 };
 
+const deleteUser = async (req, res, next) => {
+  const { userID } = req.value.params; 
+  const user = await User.findById(userID)
+  // Remove user
+  await user.remove()
+  return res.status(200).json({ success: true })
+} 
+
+
 module.exports = {
   getUser,
   index,
@@ -222,5 +231,6 @@ module.exports = {
   updateUser,
   newUserPost,
   getUserPosts,
-  searchUsers
+  searchUsers,
+  deleteUser
 };
