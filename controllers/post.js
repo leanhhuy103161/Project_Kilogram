@@ -32,8 +32,8 @@ const getPost = async (req, res, next) => {
 }
 
 const index = async (req, res, next) => {
-    const posts = await Post.find({})
-
+    const posts = await Post.find({}).populate('owner')
+    
     return res.status(200).json({posts})
 }
 
