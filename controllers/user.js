@@ -48,7 +48,7 @@ const getUserPosts = async (req, res, next) => {
 
 // get all users
 const index = async (req, res, next) => {
-  const users = await User.find({});
+  const users = await User.find({}).sort({_id:-1});
 
   return res.status(200).json({ users });
 };
